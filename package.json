@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "ts-node src/index.ts",
-    "watch": "nodemon --watch '*.ts' --exec 'ts-node' src"
+    "watch": "nodemon --watch 'src' --exec 'ts-node' src"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
