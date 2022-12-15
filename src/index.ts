@@ -5,6 +5,9 @@ import cors, { CorsOptions } from "cors";
 import morgan from "morgan";
 import fs from "fs";
 import path from "path";
+import { Server } from "socket.io";
+import { createServer } from "http";
+import { initSocket } from "./socket/socket";
 
 dotenv.config();
 
@@ -60,6 +63,21 @@ const post = (url: string, handler: HttpHandler) => {
 get("/", root);
 get("/ping", ping);
 
-app.listen(port, () => {
+const server = createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: (origin, callback) => {
+      console.log(origin);
+
+      if (whitelist.indexOf(origin || "-1") !== -1) callback(null, true);
+      else callback(new Error("Not allowed by CORS"));
+    },
+  },
+});
+
+initSocket(io);
+
+server.listen(port, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
 });
