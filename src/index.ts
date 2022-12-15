@@ -1,11 +1,28 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import { ping, root } from "./routes/common";
+import cors, { CorsOptions } from "cors";
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 5656;
+
+const whitelist = [
+  "http://localhost",
+  "http://localhost:3000",
+  "http://damascus.kro.kr",
+  "http://damascus.kro.kr:3000",
+  "https://damascus.kro.kr",
+];
+const corsOption: CorsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin || "-1") !== -1) callback(null, true);
+    else callback(new Error("Not allowed by CORS"));
+  },
+};
+
+app.use(cors(corsOption));
 
 export type HttpHandler = (req: Request, res: Response) => any;
 
