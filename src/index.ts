@@ -2,6 +2,9 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import { ping, root } from "./routes/common";
 import cors, { CorsOptions } from "cors";
+import morgan from "morgan";
+import fs from "fs";
+import path from "path";
 
 dotenv.config();
 
@@ -23,6 +26,24 @@ const corsOption: CorsOptions = {
 };
 
 app.use(cors(corsOption));
+
+const logStream = fs.createWriteStream(
+  path.join(
+    __dirname,
+    `/../log/${new Date().toLocaleDateString("ko-KR").replace(/. /gi, "_")}log`
+  ),
+  {
+    flags: "a",
+  }
+);
+app.use(
+  morgan(
+    "[:date[clf]] :remote-addr ':method' ':url' :status :res[content-length] :response-time (ms)",
+    {
+      stream: logStream,
+    }
+  )
+);
 
 export type HttpHandler = (req: Request, res: Response) => any;
 
