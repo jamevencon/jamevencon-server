@@ -68,8 +68,6 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: (origin, callback) => {
-      console.log(origin);
-
       if (whitelist.indexOf(origin || "-1") !== -1) callback(null, true);
       else callback(new Error("Not allowed by CORS"));
     },
