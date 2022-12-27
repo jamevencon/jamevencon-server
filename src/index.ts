@@ -24,6 +24,10 @@ export const DB = createConnection({
   database: DB_DATABASE,
 });
 
+console.log("Connecting to database");
+DB.connect();
+console.log("Connected to database.");
+
 const whitelist = [
   "http://localhost",
   "http://localhost:3000",
