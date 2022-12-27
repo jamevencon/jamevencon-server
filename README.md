@@ -8,6 +8,20 @@
 
 ## Installation
 
+1. Install dependencies
+
+```bash
+yarn
+```
+
+2. Run server
+
+```bash
+yarn start
+```
+
+This will setup database automatically.
+
 ## Environment setup
 
 To define pre-defined settings, add below variables to `.env` file
@@ -17,3 +31,7 @@ To define pre-defined settings, add below variables to `.env` file
 - DB_USER : privileged user for database (default is `jameven`)
 - DB_PASSWORD : password of privileged user (default is `jamevencon`)
 - DB_DATABASE : name of database (default is `jamevencon`)
+
+## Author
+
+- YEAHx4 (5tarlight)
