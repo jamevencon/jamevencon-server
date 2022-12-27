@@ -8,11 +8,21 @@ import path from "path";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import { initSocket } from "./socket/socket";
+import { createConnection } from "mysql";
+import { DB_DATABASE, DB_HOST, DB_PASSWORD, DB_PORT, DB_USER } from "./db";
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 5656;
+
+export const DB = createConnection({
+  host: DB_HOST,
+  port: DB_PORT,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_DATABASE,
+});
 
 const whitelist = [
   "http://localhost",
