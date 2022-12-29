@@ -9,7 +9,14 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 import { initSocket } from "./socket/socket";
 import { createConnection } from "mysql";
-import { DB_DATABASE, DB_HOST, DB_PASSWORD, DB_PORT, DB_USER } from "./db";
+import {
+  DB_DATABASE,
+  DB_HOST,
+  DB_PASSWORD,
+  DB_PORT,
+  DB_USER,
+} from "./utils/db";
+import { info } from "./utils/log";
 
 dotenv.config();
 
@@ -91,5 +98,5 @@ const io = new Server(server, {
 initSocket(io);
 
 server.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
+  info(`Server is running at http://localhost:${port}`);
 });
