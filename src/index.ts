@@ -16,7 +16,7 @@ import {
   DB_PORT,
   DB_USER,
 } from "./utils/db";
-import { info } from "./utils/log";
+import { err, info, success, warn } from "./utils/log";
 
 dotenv.config();
 

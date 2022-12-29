@@ -37,5 +37,23 @@ export const info = (text: string) => {
 };
 
 export const warn = (text: string) => {
-  append(text);
+  append(getTimestamp() + "[warn]" + text);
+  console.log(
+    colors.grey(getTimestamp()) + colors.bgYellow("[warn]") + " " + text
+  );
+};
+
+export const success = (text: string) => {
+  append(getTimestamp() + "[success]" + text);
+  console.log(colors.grey(getTimestamp()) + colors.green("[success] ") + text);
+};
+
+export const err = (text: string) => {
+  append(getTimestamp() + "[err]" + text);
+  console.log(colors.grey(getTimestamp()) + colors.bgRed("[err]") + " " + text);
+};
+
+export const debug = (text: string) => {
+  append(getTimestamp() + "[debug]" + text);
+  console.log(colors.grey(getTimestamp()) + colors.grey("[debug] ") + text);
 };
