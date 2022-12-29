@@ -1,10 +1,7 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import { ping, root } from "./routes/common";
 import cors, { CorsOptions } from "cors";
-import morgan from "morgan";
-import fs from "fs";
-import path from "path";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import { initSocket } from "./socket/socket";
@@ -16,7 +13,8 @@ import {
   DB_PORT,
   DB_USER,
 } from "./utils/db";
-import { err, info, success, warn } from "./utils/log";
+import { debug, info, success, error } from "./utils/log";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -31,9 +29,9 @@ export const DB = createConnection({
   database: DB_DATABASE,
 });
 
-console.log("Connecting to database");
+debug("Connecting to database");
 DB.connect();
-console.log("Connected to database.");
+success("Connected to database.");
 
 const whitelist = [
   "http://localhost",
@@ -50,35 +48,28 @@ const corsOption: CorsOptions = {
 };
 
 app.use(cors(corsOption));
+app.use(cookieParser());
 
-const logStream = fs.createWriteStream(
-  path.join(
-    __dirname,
-    `/../log/${new Date().toLocaleDateString("ko-KR").replace(/. /gi, "_")}log`
-  ),
-  {
-    flags: "a",
-  }
-);
-app.use(
-  morgan(
-    "[:date[clf]] :remote-addr ':method' ':url' :status :res[content-length] :response-time (ms)",
-    {
-      stream: logStream,
-    }
-  )
-);
+app.use((req, res, next) => {
+  info(`[${req.method}] ${req.ip} ${req.path}`);
+  next();
+});
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  error(`[${req.method}] ${req.ip} ${req.path}`);
+  error(err.stack || err.message);
+});
 
 export type HttpHandler = (req: Request, res: Response) => any;
 
 const get = (url: string, handler: HttpHandler) => {
   app.get(url, handler);
-  console.log(`[GET] ${url}`);
+  success(`[GET] ${url}`);
 };
 
 const post = (url: string, handler: HttpHandler) => {
   app.post(url, handler);
-  console.log(`[POST] ${url}`);
+  success(`[POST] ${url}`);
 };
 
 get("/", root);

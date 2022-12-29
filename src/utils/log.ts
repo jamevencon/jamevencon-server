@@ -48,7 +48,7 @@ export const success = (text: string) => {
   console.log(colors.grey(getTimestamp()) + colors.green("[success] ") + text);
 };
 
-export const err = (text: string) => {
+export const error = (text: string) => {
   append(getTimestamp() + "[err]" + text);
   console.log(colors.grey(getTimestamp()) + colors.bgRed("[err]") + " " + text);
 };
