@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 import { GET_USERS, Hello, HELLO, WELCOME } from "./socket.type";
 import { Socket } from "socket.io";
+import { info } from "../utils/log";
 
 interface User {
   socket: Socket;
@@ -16,7 +17,7 @@ export const initSocket = (io: Server) => {
 
     socket.on("disconnect", () => {
       users.delete(id);
-      console.log(`Disconnect: ${id}`);
+      info(`Disconnect: ${id}`);
     });
 
     socket.on(HELLO, ({ username }: Hello) => {
@@ -25,7 +26,7 @@ export const initSocket = (io: Server) => {
         username: username,
       });
 
-      console.log(`New Socket: ${id} (${username})`);
+      info(`New Socket: ${id} (${username})`);
       users.get(id)!.socket.emit(WELCOME);
     });
 
