@@ -16,7 +16,8 @@ import {
 } from "./utils/db";
 import { debug, info, success, error } from "./utils/log";
 import cookieParser from "cookie-parser";
-import { waitForDebugger } from "inspector";
+import { register } from "./routes/auth";
+import { json as bodyJson } from "body-parser";
 
 dotenv.config();
 
@@ -51,6 +52,7 @@ const corsOption: CorsOptions = {
 };
 
 app.use(cors(corsOption));
+app.use(bodyJson());
 app.use(cookieParser());
 
 app.use((req, res, next) => {
@@ -77,6 +79,7 @@ const post = (url: string, handler: HttpHandler) => {
 
 get("/", root);
 get("/ping", ping);
+post("/auth/register", register);
 
 const server = createServer(app);
 

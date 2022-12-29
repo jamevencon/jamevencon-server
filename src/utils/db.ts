@@ -20,9 +20,18 @@ export const query = async (query: string) => {
   }
 };
 
+export interface User {
+  id: number;
+  username: string;
+  password: string;
+  bio: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
 export const initDb = async () => {
   debug("Initiating Database");
-  const r = await query(`CREATE TABLE IF NOT EXISTS users (
+  await query(`CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username varchar(20) NOT NULL UNIQUE,
     password varchar(200) NOT NULL,

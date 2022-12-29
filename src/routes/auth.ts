@@ -1,8 +1,26 @@
-import { DB, HttpHandler } from "..";
+import { HttpHandler } from "..";
+import { query, User } from "../utils/db";
 
 export const register: HttpHandler = async (req, res) => {
   const { username, password }: { username: string; password: string } =
     req.body;
 
-  await DB.query(`SELECT * FROM users WHERE username=${username}`);
+  const rows = (await query(
+    `SELECT * FROM users WHERE username='${username}'`
+  )) as User[];
+
+  if (rows.length > 0) {
+    res.send({
+      msg: "TAKEN_USERNAME",
+    });
+    return;
+  }
+
+  await query(
+    `INSERT INTO users (username, password) VALUES ('${username}', '${password}')`
+  );
+
+  res.send({
+    msg: "SUCCESS",
+  });
 };
