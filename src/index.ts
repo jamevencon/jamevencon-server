@@ -12,9 +12,11 @@ import {
   DB_PASSWORD,
   DB_PORT,
   DB_USER,
+  initDb,
 } from "./utils/db";
 import { debug, info, success, error } from "./utils/log";
 import cookieParser from "cookie-parser";
+import { waitForDebugger } from "inspector";
 
 dotenv.config();
 
@@ -32,6 +34,7 @@ export const DB = createConnection({
 debug("Connecting to database");
 DB.connect();
 success("Connected to database.");
+initDb();
 
 const whitelist = [
   "http://localhost",
