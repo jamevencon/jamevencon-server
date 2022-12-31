@@ -16,7 +16,7 @@ import {
 } from "./utils/db";
 import { debug, info, success, error } from "./utils/log";
 import cookieParser from "cookie-parser";
-import { register } from "./routes/auth";
+import { login, register } from "./routes/auth";
 import { json as bodyJson } from "body-parser";
 
 dotenv.config();
@@ -80,6 +80,7 @@ const post = (url: string, handler: HttpHandler) => {
 get("/", root);
 get("/ping", ping);
 post("/auth/register", register);
+post("/auth/login", login);
 
 const server = createServer(app);
 
