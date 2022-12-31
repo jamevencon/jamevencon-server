@@ -1,7 +1,14 @@
 import { Server } from "socket.io";
-import { GET_USERS, Hello, HELLO, WELCOME } from "./socket.type";
+import {
+  GET_USERS,
+  Hello,
+  HELLO,
+  KICK_AND_LOGIN,
+  OTHER_LOGIN,
+  WELCOME,
+} from "./socket.type";
 import { Socket } from "socket.io";
-import { info } from "../utils/log";
+import { info, warn } from "../utils/log";
 
 interface User {
   socket: Socket;
@@ -21,6 +28,22 @@ export const initSocket = (io: Server) => {
     });
 
     socket.on(HELLO, ({ username }: Hello) => {
+      if (
+        Array.from(users.values())
+          .map((v) => v.username)
+          .includes(username)
+      ) {
+        // Multiple login detected.
+        const originalSocket = Array.from(users.values()).filter(
+          (v) => v.username === username
+        )[0].socket;
+        originalSocket.emit(OTHER_LOGIN);
+
+        users.delete(originalSocket.id);
+        socket.emit(KICK_AND_LOGIN);
+        warn(`Force logout by multiple client: ${username}`);
+      }
+
       users.set(id, {
         socket: users.get(id)!.socket,
         username: username,
