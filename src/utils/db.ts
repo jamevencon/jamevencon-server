@@ -30,12 +30,16 @@ export interface User {
 }
 
 export const initDb = async () => {
-  debug("Initiating Database");
+  debug("Initiating Database...");
+  debug(
+    "If there is DB scheme update, local database structure must be synced with."
+  );
   await query(`CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username varchar(20) NOT NULL UNIQUE,
     password varchar(200) NOT NULL,
     bio varchar(200),
+    reputation INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   )`);
