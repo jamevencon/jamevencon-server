@@ -57,3 +57,7 @@ export const debug = (text: string) => {
   append(getTimestamp() + "[debug]" + text);
   console.log(colors.grey(getTimestamp()) + colors.grey("[debug] ") + text);
 };
+
+export const queryLog = (text: string) => {
+  append(getTimestamp() + "[query]" + text);
+};

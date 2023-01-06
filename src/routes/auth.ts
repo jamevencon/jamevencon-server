@@ -1,10 +1,14 @@
 import { Request } from "express";
 import { HttpHandler } from "..";
-import { query, User } from "../utils/db";
+import { query, sqlSafe, User } from "../utils/db";
 
 const parseUser = (req: Request) => {
-  const up: { username: string; password: string } = req.body;
-  return up;
+  const { username, password }: { username: string; password: string } =
+    req.body;
+  return {
+    username: sqlSafe(username),
+    password: sqlSafe(password),
+  };
 };
 
 export const register: HttpHandler = async (req, res) => {

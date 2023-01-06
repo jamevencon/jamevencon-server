@@ -1,7 +1,7 @@
 import { MysqlError } from "mysql";
 import { promisify } from "util";
 import { DB } from "..";
-import { debug, error } from "./log";
+import { debug, error, queryLog } from "./log";
 
 export const DB_HOST = process.env.DB_HOST || "localhost";
 export const DB_PORT =
@@ -10,10 +10,13 @@ export const DB_USER = process.env.DB_USER || "jameven";
 export const DB_PASSWORD = process.env.DB_PASSWORD || "jamevencon";
 export const DB_DATABASE = process.env.DB_DATABASE || "jamevencon";
 
+export const sqlSafe = (str: string) => str.replace(/[;\-\'\"]/g, "");
+
 export const query = async (query: string) => {
   const q = promisify(DB.query).bind(DB);
 
   try {
+    queryLog(query);
     return await q(query);
   } catch (e) {
     error((e as Error).toString());
