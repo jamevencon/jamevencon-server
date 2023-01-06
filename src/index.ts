@@ -16,7 +16,7 @@ import {
 } from "./utils/db";
 import { debug, info, success, error } from "./utils/log";
 import cookieParser from "cookie-parser";
-import { login, register } from "./routes/auth";
+import { deleteAccount, login, register } from "./routes/auth";
 import { json as bodyJson } from "body-parser";
 
 dotenv.config();
@@ -81,6 +81,7 @@ get("/", root);
 get("/ping", ping);
 post("/auth/register", register);
 post("/auth/login", login);
+post("/auth/delete", deleteAccount);
 
 const server = createServer(app);
 
