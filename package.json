@@ -7,6 +7,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@types/body-parser": "^1.19.2",
     "@types/colors": "^1.2.1",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
@@ -15,6 +16,7 @@
     "@types/morgan": "^1.9.3",
     "@types/mysql": "^2.15.21",
     "@types/node": "^18.11.18",
+    "body-parser": "^1.20.1",
     "chalk": "^5.2.0",
     "colors": "^1.4.0",
     "cookie-parser": "^1.4.6",
