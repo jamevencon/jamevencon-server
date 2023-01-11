@@ -12,9 +12,12 @@ import {
   DB_PASSWORD,
   DB_PORT,
   DB_USER,
+  initDb,
 } from "./utils/db";
 import { debug, info, success, error } from "./utils/log";
 import cookieParser from "cookie-parser";
+import { alterAccount, deleteAccount, login, register } from "./routes/auth";
+import { json as bodyJson } from "body-parser";
 
 dotenv.config();
 
@@ -32,6 +35,7 @@ export const DB = createConnection({
 debug("Connecting to database");
 DB.connect();
 success("Connected to database.");
+initDb();
 
 const whitelist = [
   "http://localhost",
@@ -48,6 +52,7 @@ const corsOption: CorsOptions = {
 };
 
 app.use(cors(corsOption));
+app.use(bodyJson());
 app.use(cookieParser());
 
 app.use((req, res, next) => {
@@ -74,6 +79,10 @@ const post = (url: string, handler: HttpHandler) => {
 
 get("/", root);
 get("/ping", ping);
+post("/auth/register", register);
+post("/auth/login", login);
+post("/auth/delete", deleteAccount);
+post("/auth/alter", alterAccount);
 
 const server = createServer(app);
 
