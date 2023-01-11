@@ -32,6 +32,8 @@ export interface User {
   updated_at: Date;
 }
 
+export const userKeys = ["username", "password", "bio"];
+
 export const initDb = async () => {
   debug("Initiating Database...");
   debug(
